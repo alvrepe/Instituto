@@ -1,5 +1,7 @@
 package instituto;
 
+import instituto.exceptions.NoHayGrupoException;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -24,9 +26,32 @@ public class Instituto implements IInstituto {
 
     @Override
     public void printAlumnosEnCp(int cp) {
-        for(Grupo grupo: grupos) {
+        for (Grupo grupo : grupos) {
             grupo.printAlumnosEnCp(cp);
         }
+    }
+
+    @Override
+    public Alumno[] findAlumnos(String name) throws NoHayGrupoException {
+        Grupo grupo = finGroup(name);
+
+        if (grupo != null) {
+            return grupo.getAlumnos();
+        } else {
+            throw new NoHayGrupoException();
+        }
+
+    }
+
+    public Grupo finGroup(String name) {
+        Grupo res = null;
+
+        for (Grupo grupo : grupos) {
+            if (grupo.getNombre().equals(name)) {
+                res = grupo;
+            }
+        }
+        return res;
     }
 
     public String getNombre() {
